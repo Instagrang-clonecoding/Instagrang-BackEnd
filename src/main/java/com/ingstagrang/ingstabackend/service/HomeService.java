@@ -6,6 +6,7 @@ import com.ingstagrang.ingstabackend.dto.PostLikeDto;
 import com.ingstagrang.ingstabackend.entity.Comment;
 import com.ingstagrang.ingstabackend.entity.Post;
 import com.ingstagrang.ingstabackend.entity.PostLike;
+import com.ingstagrang.ingstabackend.repository.CommentRepository;
 import com.ingstagrang.ingstabackend.repository.PostRepository;
 import com.ingstagrang.ingstabackend.timeconversion.TimeConversion;
 import lombok.RequiredArgsConstructor;
@@ -27,17 +28,18 @@ public class HomeService {
     public List<PostDto.PostResponseDto> getPosts() {
 
         List<PostDto.PostResponseDto> postResponseDtos = new ArrayList<>();
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAllByOrderByCreateAtDesc();
 
         for (Post post : posts) {
 
             //댓글 리스트
             List<Comment> comments = post.getCommentList();
-            List<CommentDto.CommentResponseDto> commentResponseDtos = new ArrayList<>();
+            List<CommentDto.CommentDtoResponseDto> commentResponseDtos = new ArrayList<>();
 
             for (Comment comment : comments) {
-                CommentDto.CommentResponseDto commentResponseDto =
-                        new CommentDto.CommentResponseDto(post.getUser().getId(), post.getContent());
+
+                CommentDto.CommentDtoResponseDto commentResponseDto =
+                        new CommentDto.CommentDtoResponseDto(comment.getUser().getId(), comment.getContent());
 
                 commentResponseDtos.add(commentResponseDto);
             }
@@ -46,7 +48,7 @@ public class HomeService {
             List<PostLike> postLikes = post.getPostLikeList();
             List<PostLikeDto> postLikeDtos = new ArrayList<>();
             for (PostLike postLike : postLikes) {
-                PostLikeDto postLikeDto = new PostLikeDto(post.getUser().getId());
+                PostLikeDto postLikeDto = new PostLikeDto(postLike.getId());
                 postLikeDtos.add(postLikeDto);
             }
 

@@ -20,7 +20,7 @@ public class HomeController {
 
     //모든 포스트 불러오기
     @GetMapping("/")
-    public ResponseEntity<List<PostDto.PostResponseDto>> mainPageLoad(){
+    public ResponseEntity<List<PostDto.PostResponseDto>> getPosts(){
         return ResponseEntity.ok().body(homeService.getPosts());
     }
 

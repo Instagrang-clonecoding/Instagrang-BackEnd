@@ -1,9 +1,9 @@
 package com.ingstagrang.ingstabackend.controller;
 
-import com.ingstagrang.ingstabackend.dto.CommentDto;
 import com.ingstagrang.ingstabackend.dto.PostDto;
 import com.ingstagrang.ingstabackend.entity.User;
 import com.ingstagrang.ingstabackend.security.UserDetailsImpl;
+import com.ingstagrang.ingstabackend.service.PostLikeService;
 import com.ingstagrang.ingstabackend.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.io.IOException;
 @RestController
 public class PostController {
     private final PostService postService;
-
+    private final PostLikeService postLikeService;
 
 //    @ApiOperation("포스트 작성")
 //    @PostMapping("/api/posts")
@@ -45,5 +45,14 @@ public class PostController {
     @DeleteMapping("/api/posts/{postId}")
     public void deletePost(@PathVariable Long postId){
         postService.deletePost(postId);
+    }
+
+    //게시글 좋아요
+    @PostMapping("/api/likes/{postId}")
+    public void addLike(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        postLikeService.addLike(postId,userDetails.getUser());
     }
 }

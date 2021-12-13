@@ -24,7 +24,7 @@ public class PostDto {
         private String content;
         private String image;
         private String createdAt;
-        private List<CommentDto.CommentResponseDto> commentList;
+        private List<CommentDto.CommentDtoResponseDto> commentList;
         private List<PostLikeDto> likeList;
     }
 }
