@@ -1,11 +1,13 @@
 package com.ingstagrang.ingstabackend.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Comment extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

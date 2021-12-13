@@ -8,6 +8,11 @@ import com.ingstagrang.ingstabackend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.UUID;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +36,28 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
+    }
+
+
+    @Transactional
+    public void imageTest(MultipartFile image, String content, User user) throws IOException {
+        String path = "/Camera Roll/";
+        String saveLocation = "C:/Users/Yang/Pictures/Camera Roll/";
+
+        // 같은 이름의 이미지 파일을 방지하고자 램덤함 UUID를 생성해서 파일이름앞에 붙힌다.
+        UUID uuid = UUID.randomUUID();
+        String originFileName = image.getOriginalFilename();
+
+        originFileName = originFileName.replace(" .", ".");
+
+        String fileName = uuid + "_" + originFileName;
+
+        image.transferTo(new File(saveLocation + fileName));
+
+        path += fileName;
+        path = path.replace(" .", ".");
+
+        Post newPost = new Post(path, content, user);
+        postRepository.save(newPost);
     }
 }
