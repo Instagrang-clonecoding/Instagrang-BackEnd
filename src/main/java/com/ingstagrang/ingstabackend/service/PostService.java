@@ -20,8 +20,9 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public void createPost(PostDto.PostRequestDto requestDto, User user) {
-        Post newPost = new Post(requestDto, user);
+    public void createPost(MultipartFile image, String content, User user) throws IOException {
+        String path = getImagePath(image); // 이미지 저장, path 가져오기
+        Post newPost = new Post(path, content, user);
         postRepository.save(newPost);
     }
 
@@ -39,10 +40,9 @@ public class PostService {
     }
 
 
-    @Transactional
-    public void imageTest(MultipartFile image, String content, User user) throws IOException {
-        String path = "/Camera Roll/";
-        String saveLocation = "C:/Users/Yang/Pictures/Camera Roll/";
+    public String getImagePath(MultipartFile image) throws IOException {
+        String path = "/image/";
+        String saveLocation = "C:/Users/Yang/Pictures/image/";
 
         // 같은 이름의 이미지 파일을 방지하고자 램덤함 UUID를 생성해서 파일이름앞에 붙힌다.
         UUID uuid = UUID.randomUUID();
@@ -57,7 +57,6 @@ public class PostService {
         path += fileName;
         path = path.replace(" .", ".");
 
-        Post newPost = new Post(path, content, user);
-        postRepository.save(newPost);
+        return path;
     }
 }
