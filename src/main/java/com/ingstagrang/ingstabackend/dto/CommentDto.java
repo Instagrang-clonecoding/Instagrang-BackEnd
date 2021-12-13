@@ -6,17 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class CommentDto {
+
     @Setter
     @Getter
     @AllArgsConstructor
-    public static class CommentRequestDto{
+    @NoArgsConstructor
+    public static class CommentDtoRequestDto{
         private String content;
     }
 
     @Setter
     @Getter
     @AllArgsConstructor
-    public static class CommentResponseDto{
+    public static class CommentDtoResponseDto{
         private Long userId;
         private String content;
     }
