@@ -19,20 +19,20 @@ public class PostController {
     private final PostService postService;
 
 
-    @ApiOperation("포스트 작성")
-    @PostMapping("/api/posts")
-    public void createPost(@RequestBody PostDto.PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        User user = userDetails.getUser();
-        postService.createPost(requestDto, user);
-    }
+//    @ApiOperation("포스트 작성")
+//    @PostMapping("/api/posts")
+//    public void createPost(@RequestBody PostDto.PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+//        User user = userDetails.getUser();
+//        postService.createPost(requestDto, user);
+//    }
 
     @ApiOperation("포스트 작성")
-    @PostMapping("/api/imagetest")
-    public void testImage(@RequestParam("image") MultipartFile image,
+    @PostMapping("/api/posts")
+    public void createPost(@RequestParam("image") MultipartFile image,
                           @RequestParam("content") String content,
                           @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         User user = userDetails.getUser();
-        postService.imageTest(image, content, user);
+        postService.createPost(image, content, user);
     }
 
     @ApiOperation("포스트 수정")
@@ -45,10 +45,5 @@ public class PostController {
     @DeleteMapping("/api/posts/{postId}")
     public void deletePost(@PathVariable Long postId){
         postService.deletePost(postId);
-    }
-
-    @PostMapping("/api/comments/{postId}")
-    public void test(@PathVariable Long postId, @RequestBody CommentDto.CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        System.out.println("되네?");
     }
 }
