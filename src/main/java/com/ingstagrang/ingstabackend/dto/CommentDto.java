@@ -20,6 +20,8 @@ public class CommentDto {
     @AllArgsConstructor
     public static class CommentDtoResponseDto{
         private Long commentId;
+        private String nickname;
         private String content;
+        private String createdAt;
     }
 }
