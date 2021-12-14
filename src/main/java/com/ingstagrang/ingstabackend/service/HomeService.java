@@ -39,7 +39,7 @@ public class HomeService {
             for (Comment comment : comments) {
 
                 CommentDto.CommentDtoResponseDto commentResponseDto =
-                        new CommentDto.CommentDtoResponseDto(comment.getUser().getId(), comment.getContent());
+                        new CommentDto.CommentDtoResponseDto(comment.getId(), comment.getContent());
 
                 commentResponseDtos.add(commentResponseDto);
             }
