@@ -1,6 +1,7 @@
 package com.ingstagrang.ingstabackend.entity;
 
 import com.ingstagrang.ingstabackend.dto.SignupDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,5 +29,11 @@ public class User {
         this.username = requestDto.getEmail();
         this.nickname = requestDto.getNickname();
         this.password = enPassword;
+    }
+
+    public User(String id, String nick, String pw) {
+        this.username = id;
+        this.nickname = nick;
+        this.password = pw;
     }
 }
