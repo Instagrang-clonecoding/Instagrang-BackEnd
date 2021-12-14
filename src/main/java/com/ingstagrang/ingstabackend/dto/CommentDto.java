@@ -19,7 +19,7 @@ public class CommentDto {
     @Getter
     @AllArgsConstructor
     public static class CommentDtoResponseDto{
-        private Long userId;
+        private Long commentId;
         private String content;
     }
 }
