@@ -1,16 +1,21 @@
 package com.ingstagrang.ingstabackend.service;
 
 
+import com.ingstagrang.ingstabackend.dto.CommentDto;
 import com.ingstagrang.ingstabackend.dto.PostDto;
+import com.ingstagrang.ingstabackend.dto.PostLikeDto;
 import com.ingstagrang.ingstabackend.entity.Post;
 import com.ingstagrang.ingstabackend.entity.User;
 import com.ingstagrang.ingstabackend.repository.PostRepository;
+import com.ingstagrang.ingstabackend.timeconversion.TimeConversion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.io.IOException;
 
@@ -23,7 +28,8 @@ public class PostService {
     public void createPost(MultipartFile image, String content, User user) throws IOException {
         String path = getImagePath(image); // 이미지 저장, path 가져오기
         Post newPost = new Post(path, content, user);
-        postRepository.save(newPost);
+        newPost = postRepository.save(newPost);
+        // createResponseDto(newPost);
     }
 
     @Transactional
@@ -60,5 +66,21 @@ public class PostService {
         path = path.replace(" .", ".");
 
         return path;
+    }
+
+    public PostDto.PostResponseDto createResponseDto(Post post){
+        List<CommentDto.CommentDtoResponseDto> commentResponseDtos = new ArrayList<>();
+        List<PostLikeDto> postLikeDtos = new ArrayList<>();
+
+        return PostDto.PostResponseDto.builder()
+                .postId(post.getId())
+                .userId(post.getUser().getId())
+                .nickname(post.getUser().getNickname())
+                .content(post.getContent())
+                .image(post.getImage())
+                .createdAt(TimeConversion.timeConversion(post.getCreateAt()))
+                .commentList(commentResponseDtos)
+                .likeList(postLikeDtos)
+                .build();
     }
 }
