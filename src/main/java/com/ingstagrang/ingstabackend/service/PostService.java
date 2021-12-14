@@ -36,13 +36,15 @@ public class PostService {
 
     @Transactional
     public void deletePost(Long postId) {
+        // 나중에 유저 검증 넣기
         postRepository.deleteById(postId);
     }
 
 
     public String getImagePath(MultipartFile image) throws IOException {
-        String path = "/image/";
-        String saveLocation = "C:/Users/Yang/Pictures/image/";
+        String path = "/images/";
+        // String saveLocation = "C:/Users/Yang/Pictures/image/"; // Local 컴퓨터
+        String saveLocation = "/home/ubuntu/images/"; // AWS
 
         // 같은 이름의 이미지 파일을 방지하고자 램덤함 UUID를 생성해서 파일이름앞에 붙힌다.
         UUID uuid = UUID.randomUUID();
