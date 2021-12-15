@@ -22,7 +22,7 @@ public class PostLikeService {
     public void addLike(Long postId, User user) {
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 포스트입니다."));
-
+        System.out.println(user.getId());
        PostLike findPostLike = likeRepository.findByPostAndUser(post, user).orElse(null);
 
         //존재하면 삭제, 존재하지 않으면 추가
