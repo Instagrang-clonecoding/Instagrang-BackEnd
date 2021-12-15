@@ -1,9 +1,6 @@
 package com.ingstagrang.ingstabackend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 public class CommentDto {
 
@@ -18,6 +15,7 @@ public class CommentDto {
     @Setter
     @Getter
     @AllArgsConstructor
+    @Builder
     public static class CommentDtoResponseDto{
         private Long commentId;
         private String nickname;

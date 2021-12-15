@@ -15,9 +15,9 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/api/comments/{postId}")
-    public void saveComment(@PathVariable Long postId, @RequestBody CommentDto.CommentDtoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public CommentDto.CommentDtoResponseDto saveComment(@PathVariable Long postId, @RequestBody CommentDto.CommentDtoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         User user = userDetails.getUser();
-        commentService.serviceCommentSave(postId,requestDto,user);
+        return commentService.serviceCommentSave(postId,requestDto,user);
     }
 
     @DeleteMapping("/api/comments/{commentId}")
