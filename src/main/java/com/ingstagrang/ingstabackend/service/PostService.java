@@ -4,7 +4,9 @@ package com.ingstagrang.ingstabackend.service;
 import com.ingstagrang.ingstabackend.dto.CommentDto;
 import com.ingstagrang.ingstabackend.dto.PostDto;
 import com.ingstagrang.ingstabackend.dto.PostLikeDto;
+import com.ingstagrang.ingstabackend.entity.Comment;
 import com.ingstagrang.ingstabackend.entity.Post;
+import com.ingstagrang.ingstabackend.entity.PostLike;
 import com.ingstagrang.ingstabackend.entity.User;
 import com.ingstagrang.ingstabackend.repository.PostRepository;
 import com.ingstagrang.ingstabackend.timeconversion.TimeConversion;
@@ -25,20 +27,31 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public void createPost(MultipartFile image, String content, User user) throws IOException {
+    public PostDto.PostResponseDto createPost(MultipartFile image, String content, User user) throws IOException {
         String path = getImagePath(image); // 이미지 저장, path 가져오기
+
         Post newPost = new Post(path, content, user);
         newPost = postRepository.save(newPost);
-        // createResponseDto(newPost);
+
+        return setPostResponseDto(newPost);
     }
 
     @Transactional
-    public void updatePost(Long postId, PostDto.PostRequestDto requestDto) {
+    public PostDto.PostResponseDto updatePost(Long postId, MultipartFile image, String content, User user) throws IOException {
         Post updatePost = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 포스트입니다."));
 
-        updatePost.update(requestDto);
+        String path = getImagePath(image); // 이미지 저장, path 가져오기
+
+        updatePost.update(path, content);
+
+        PostDto.PostResponseDto responseDto = setPostResponseDto(updatePost);
+        setCommentResponseDto(updatePost.getCommentList(), responseDto);
+        setLikeResponseDto(updatePost.getPostLikeList(), responseDto);
+
+        return responseDto;
     }
+
 
     @Transactional
     public void deletePost(Long postId) {
@@ -69,7 +82,7 @@ public class PostService {
         return path;
     }
 
-    public PostDto.PostResponseDto createResponseDto(Post post){
+    public PostDto.PostResponseDto setPostResponseDto(Post post) {
         List<CommentDto.CommentDtoResponseDto> commentResponseDtos = new ArrayList<>();
         List<PostLikeDto> postLikeDtos = new ArrayList<>();
 
@@ -83,5 +96,28 @@ public class PostService {
                 .commentList(commentResponseDtos)
                 .likeList(postLikeDtos)
                 .build();
+    }
+
+
+    private void setCommentResponseDto(List<Comment> commentList, PostDto.PostResponseDto responseDto) {
+        for (Comment comment : commentList) {
+
+            CommentDto.CommentDtoResponseDto commentResponseDto =
+                    new CommentDto.CommentDtoResponseDto(
+                            comment.getId(),
+                            comment.getUser().getNickname(),
+                            comment.getContent(),
+                            TimeConversion.timeConversion(comment.getCreateAt())
+                    );
+
+            responseDto.getCommentList().add(commentResponseDto);
+        }
+    }
+
+    private void setLikeResponseDto(List<PostLike> postLikeList, PostDto.PostResponseDto responseDto) {
+        for (PostLike postLike : postLikeList) {
+            PostLikeDto postLikeDto = new PostLikeDto(postLike.getUser().getId());
+            responseDto.getLikeList().add(postLikeDto);
+        }
     }
 }
