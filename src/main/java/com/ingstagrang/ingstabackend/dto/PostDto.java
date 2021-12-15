@@ -17,6 +17,7 @@ public class PostDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
+    @Setter
     public static class PostResponseDto{
         private Long postId;
         private Long userId;

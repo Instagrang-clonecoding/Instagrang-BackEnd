@@ -7,6 +7,7 @@ import com.ingstagrang.ingstabackend.service.PostLikeService;
 import com.ingstagrang.ingstabackend.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,26 +20,23 @@ public class PostController {
     private final PostService postService;
     private final PostLikeService postLikeService;
 
-//    @ApiOperation("포스트 작성")
-//    @PostMapping("/api/posts")
-//    public void createPost(@RequestBody PostDto.PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-//        User user = userDetails.getUser();
-//        postService.createPost(requestDto, user);
-//    }
-
     @ApiOperation("포스트 작성")
     @PostMapping("/api/posts")
-    public void createPost(@RequestParam("image") MultipartFile image,
-                          @RequestParam("content") String content,
-                          @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public ResponseEntity<PostDto.PostResponseDto> createPost(@RequestParam("image") MultipartFile image,
+                                                              @RequestParam("content") String content,
+                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         User user = userDetails.getUser();
-        postService.createPost(image, content, user);
+        return ResponseEntity.ok().body(postService.createPost(image, content, user));
     }
 
     @ApiOperation("포스트 수정")
     @PutMapping("/api/posts/{postId}")
-    public void updatePost(@PathVariable Long postId, @RequestBody PostDto.PostRequestDto requestDto){
-        postService.updatePost(postId, requestDto);
+    public ResponseEntity<PostDto.PostResponseDto> updatePost(@PathVariable Long postId,
+                                                              @RequestParam("image") MultipartFile image,
+                                                              @RequestParam("content") String content,
+                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        User user = userDetails.getUser();
+        return ResponseEntity.ok().body(postService.updatePost(postId, image, content, user));
     }
 
     @ApiOperation("포스트 삭제")

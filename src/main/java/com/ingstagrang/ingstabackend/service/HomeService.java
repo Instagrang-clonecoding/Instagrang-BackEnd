@@ -53,7 +53,7 @@ public class HomeService {
             List<PostLike> postLikes = post.getPostLikeList();
             List<PostLikeDto> postLikeDtos = new ArrayList<>();
             for (PostLike postLike : postLikes) {
-                PostLikeDto postLikeDto = new PostLikeDto(postLike.getId());
+                PostLikeDto postLikeDto = new PostLikeDto(postLike.getUser().getId());
                 postLikeDtos.add(postLikeDto);
             }
 

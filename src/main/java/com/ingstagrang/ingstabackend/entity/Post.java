@@ -3,6 +3,7 @@ package com.ingstagrang.ingstabackend.entity;
 import com.ingstagrang.ingstabackend.dto.PostDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -44,8 +45,8 @@ public class Post extends Timestamped {
         this.user = user;
     }
 
-    public void update(PostDto.PostRequestDto requestDto){
-        this.content = requestDto.getContent();
-        this.image = requestDto.getImage();
+    public void update(String path, String content){
+        this.image = path;
+        this.content = content;
     }
 }
