@@ -50,9 +50,9 @@ public class PostService {
     public String getImagePath(MultipartFile image) throws IOException {
         String path = "/images/";
         // String saveLocation = "C:/Users/Yang/Pictures/image/"; // Local 컴퓨터
-         String saveLocation = "/Users/jeong-yeongbin/Desktop/project/image/";
-//        String saveLocation = "/home/ubuntu/images/"; // AWS
 
+        String saveLocation = "/home/ubuntu/images/"; // AWS
+//          String saveLocation = "/Users/jeong-yeongbin/Desktop/project/image/";
         // 같은 이름의 이미지 파일을 방지하고자 램덤함 UUID를 생성해서 파일이름앞에 붙힌다.
         UUID uuid = UUID.randomUUID();
         String originFileName = image.getOriginalFilename();
