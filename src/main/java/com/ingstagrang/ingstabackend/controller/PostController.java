@@ -41,8 +41,9 @@ public class PostController {
 
     @ApiOperation("포스트 삭제")
     @DeleteMapping("/api/posts/{postId}")
-    public void deletePost(@PathVariable Long postId){
-        postService.deletePost(postId);
+    public void deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        User user = userDetails.getUser();
+        postService.deletePost(postId, user);
     }
 
     //게시글 좋아요

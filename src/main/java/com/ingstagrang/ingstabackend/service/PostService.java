@@ -41,6 +41,10 @@ public class PostService {
         Post updatePost = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 포스트입니다."));
 
+        if(user.getId() != updatePost.getId()){
+            throw new IllegalArgumentException("본인 인증이 되지 않아 게시물을 수정할 수 없습니다!");
+        }
+
         String path = getImagePath(image); // 이미지 저장, path 가져오기
 
         updatePost.update(path, content);
@@ -54,12 +58,19 @@ public class PostService {
 
 
     @Transactional
-    public void deletePost(Long postId) {
-        // 나중에 유저 검증 넣기
+    public void deletePost(Long postId, User user) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 포스트입니다."));
+
+        if(user.getId() != post.getId()){
+            throw new IllegalArgumentException("본인 인증이 되지 않아 게시물을 수정할 수 없습니다!");
+        }
+
         postRepository.deleteById(postId);
     }
 
 
+    // 이미지 서버 저장 -> 저장 경로 반환 함수
     public String getImagePath(MultipartFile image) throws IOException {
         String path = "/images/";
         // String saveLocation = "C:/Users/Yang/Pictures/image/"; // Local 컴퓨터
@@ -82,6 +93,7 @@ public class PostService {
         return path;
     }
 
+    // PostResponseDto 생성
     public PostDto.PostResponseDto setPostResponseDto(Post post) {
         List<CommentDto.CommentDtoResponseDto> commentResponseDtos = new ArrayList<>();
         List<PostLikeDto> postLikeDtos = new ArrayList<>();
@@ -99,6 +111,7 @@ public class PostService {
     }
 
 
+    // CommentResponseDto 생성
     private void setCommentResponseDto(List<Comment> commentList, PostDto.PostResponseDto responseDto) {
         for (Comment comment : commentList) {
 
@@ -114,6 +127,7 @@ public class PostService {
         }
     }
 
+    // LikeResponseDto 생성
     private void setLikeResponseDto(List<PostLike> postLikeList, PostDto.PostResponseDto responseDto) {
         for (PostLike postLike : postLikeList) {
             PostLikeDto postLikeDto = new PostLikeDto(postLike.getUser().getId());
