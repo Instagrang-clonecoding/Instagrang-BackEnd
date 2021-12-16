@@ -41,7 +41,7 @@ public class PostService {
         Post updatePost = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 포스트입니다."));
 
-        if(user.getId() != updatePost.getId()){
+        if(user.getId() != updatePost.getUser().getId()){
             throw new IllegalArgumentException("본인 인증이 되지 않아 게시물을 수정할 수 없습니다!");
         }
 
@@ -62,7 +62,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 포스트입니다."));
 
-        if(user.getId() != post.getId()){
+        if(user.getId() != post.getUser().getId()){
             throw new IllegalArgumentException("본인 인증이 되지 않아 게시물을 수정할 수 없습니다!");
         }
 
