@@ -31,32 +31,8 @@ public class HomeService {
         List<Post> posts = postRepository.findAllByOrderByCreateAtDesc();
 
         for (Post post : posts) {
-
-            //댓글 리스트
-            List<Comment> comments = post.getCommentList();
-            List<CommentDto.CommentDtoResponseDto> commentResponseDtos = new ArrayList<>();
-
-            for (Comment comment : comments) {
-
-                CommentDto.CommentDtoResponseDto commentResponseDto =
-                        CommentDto.CommentDtoResponseDto.builder()
-                                .commentId(comment.getId())
-                                .userId(comment.getUser().getId())
-                                .nickname(comment.getUser().getNickname())
-                                .content(comment.getContent())
-                                .createdAt(TimeConversion.timeConversion(comment.getCreateAt()))
-                                .build();
-
-                commentResponseDtos.add(commentResponseDto);
-            }
-
-            //좋아요 리스트
-            List<PostLike> postLikes = post.getPostLikeList();
-            List<PostLikeDto> postLikeDtos = new ArrayList<>();
-            for (PostLike postLike : postLikes) {
-                PostLikeDto postLikeDto = new PostLikeDto(postLike.getUser().getId());
-                postLikeDtos.add(postLikeDto);
-            }
+            List<CommentDto.CommentDtoResponseDto> commentList = makeCommentDtoList(post);
+            List<PostLikeDto> postLikeList = makeLikeDtoList(post);
 
             PostDto.PostResponseDto postResponseDto = PostDto.PostResponseDto.builder()
                     .postId(post.getId())
@@ -65,12 +41,46 @@ public class HomeService {
                     .content(post.getContent())
                     .image(post.getImage())
                     .createdAt(TimeConversion.timeConversion(post.getCreateAt()))
-                    .commentList(commentResponseDtos)
-                    .likeList(postLikeDtos)
+                    .commentList(commentList)
+                    .likeList(postLikeList)
                     .build();
 
             postResponseDtos.add(postResponseDto);
         }
         return postResponseDtos;
     }
+    //commentList 생성
+    private List<CommentDto.CommentDtoResponseDto> makeCommentDtoList(Post post) {
+
+        List<Comment> comments = post.getCommentList();
+        List<CommentDto.CommentDtoResponseDto> commentResponseDtos = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            CommentDto.CommentDtoResponseDto commentResponseDto =
+                    CommentDto.CommentDtoResponseDto.builder()
+                            .commentId(comment.getId())
+                            .userId(comment.getUser().getId())
+                            .nickname(comment.getUser().getNickname())
+                            .content(comment.getContent())
+                            .createdAt(TimeConversion.timeConversion(comment.getCreateAt()))
+                            .build();
+
+            commentResponseDtos.add(commentResponseDto);
+        }
+
+        return commentResponseDtos;
+    }
+        //likeList생성
+        private List<PostLikeDto> makeLikeDtoList (Post post) {
+
+        List<PostLike> postLikes = post.getPostLikeList();
+            List<PostLikeDto> postLikeDtos = new ArrayList<>();
+
+            for (PostLike postLike : postLikes) {
+                PostLikeDto postLikeDto = new PostLikeDto(postLike.getUser().getId());
+                postLikeDtos.add(postLikeDto);
+            }
+
+            return postLikeDtos;
+        }
 }
