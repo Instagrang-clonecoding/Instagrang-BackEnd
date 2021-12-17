@@ -31,6 +31,7 @@ public class CommentService {
 
         return CommentDto.CommentDtoResponseDto.builder()
                 .commentId(comment.getId())
+                .userId(comment.getUser().getId())
                 .nickname(comment.getUser().getNickname())
                 .content(comment.getContent())
                 .createdAt(TimeConversion.timeConversion(comment.getCreateAt()))

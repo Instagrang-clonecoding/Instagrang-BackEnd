@@ -39,12 +39,13 @@ public class HomeService {
             for (Comment comment : comments) {
 
                 CommentDto.CommentDtoResponseDto commentResponseDto =
-                        new CommentDto.CommentDtoResponseDto(
-                                comment.getId(),
-                                comment.getUser().getNickname(),
-                                comment.getContent(),
-                                TimeConversion.timeConversion(comment.getCreateAt())
-                        );
+                        CommentDto.CommentDtoResponseDto.builder()
+                                .commentId(comment.getId())
+                                .userId(comment.getUser().getId())
+                                .nickname(comment.getUser().getNickname())
+                                .content(comment.getContent())
+                                .createdAt(TimeConversion.timeConversion(comment.getCreateAt()))
+                                .build();
 
                 commentResponseDtos.add(commentResponseDto);
             }
