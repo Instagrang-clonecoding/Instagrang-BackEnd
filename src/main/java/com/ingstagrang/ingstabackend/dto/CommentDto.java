@@ -18,6 +18,7 @@ public class CommentDto {
     @Builder
     public static class CommentDtoResponseDto{
         private Long commentId;
+        private Long userId;
         private String nickname;
         private String content;
         private String createdAt;

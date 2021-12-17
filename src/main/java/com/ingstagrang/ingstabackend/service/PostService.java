@@ -118,6 +118,7 @@ public class PostService {
             CommentDto.CommentDtoResponseDto commentResponseDto =
                     new CommentDto.CommentDtoResponseDto(
                             comment.getId(),
+                            comment.getUser().getId(),
                             comment.getUser().getNickname(),
                             comment.getContent(),
                             TimeConversion.timeConversion(comment.getCreateAt())
