@@ -22,5 +22,7 @@ public class SignupDto {
     @NoArgsConstructor
     public static class ResponseDto{
         private Long userId;
+        private String email;
+        private String nickname;
     }
 }
