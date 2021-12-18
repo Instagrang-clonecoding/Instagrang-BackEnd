@@ -29,11 +29,13 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
 
         // UserId 내려주기
         response.setContentType("application/json");
-        SignupDto.ResponseDto userId = SignupDto.ResponseDto.builder()
+        SignupDto.ResponseDto responseDto = SignupDto.ResponseDto.builder()
                 .userId(userDetails.getUser().getId())
+                .email(userDetails.getUsername())
+                .nickname(userDetails.getUser().getNickname())
                 .build();
 
-        String result = mapper.writeValueAsString(userId);
+        String result = mapper.writeValueAsString(responseDto);
         response.getWriter().write(result);
     }
 }

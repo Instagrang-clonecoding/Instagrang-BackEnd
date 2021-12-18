@@ -127,8 +127,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Image View 허용
         skipPathList.add("GET,/images/**");
-        skipPathList.add("GET,/"); // 임시...
-
 
         // Swagger
         skipPathList.add("GET, /swagger-ui.html");
