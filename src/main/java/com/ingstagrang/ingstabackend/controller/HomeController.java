@@ -1,15 +1,27 @@
 package com.ingstagrang.ingstabackend.controller;
 
+import com.ingstagrang.ingstabackend.dto.PostDto;
+import com.ingstagrang.ingstabackend.security.UserDetailsImpl;
+import com.ingstagrang.ingstabackend.service.HomeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 public class HomeController {
-//    @GetMapping("/")
-//    public ResponseEntity<CommentDto> mainPageLoad(){
-//        CommentDto commentDto =  new CommentDto();
-//        return ResponseEntity.ok().body(commentDto);
-//    }
-    //test
+    private final HomeService homeService;
+
+    //모든 포스트 불러오기
+    @GetMapping("/")
+    public ResponseEntity<List<PostDto.PostResponseDto>> getPosts(){
+        return ResponseEntity.ok().body(homeService.getPosts());
+    }
+
 }

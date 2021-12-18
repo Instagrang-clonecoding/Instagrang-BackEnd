@@ -1,7 +1,9 @@
 package com.ingstagrang.ingstabackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class SignupDto {
 
@@ -13,4 +15,14 @@ public class SignupDto {
         private String password;
     }
 
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResponseDto{
+        private Long userId;
+        private String email;
+        private String nickname;
+    }
 }
