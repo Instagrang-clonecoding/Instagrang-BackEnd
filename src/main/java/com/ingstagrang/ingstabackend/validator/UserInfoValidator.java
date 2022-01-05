@@ -15,7 +15,7 @@ public class UserInfoValidator {
 
         // 닉네임 형식 확인
         if(nickname == null || nickname.length() < 4 || nickname.length() > 15) {
-            throw new IllegalArgumentException("최소 4자 이상, 15글자 이하가 되어야 합니다.");
+            throw new IllegalArgumentException("테스트");
         }
 
         // 비밀번호 형식 확인
